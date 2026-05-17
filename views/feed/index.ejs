@@ -1,0 +1,173 @@
+<div class="row">
+    <!-- Left Sidebar -->
+    <div class="col-md-3 d-none d-md-block">
+        <%- include('../partials/sidebar-left') %>
+    </div>
+
+    <!-- Main Feed -->
+    <div class="col-md-6">
+        <!-- Create Post Card -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="d-flex">
+                    <img src="<%= user.profilePhoto %>" alt="<%= user.name %>" class="rounded-circle me-3 object-fit-cover" width="48" height="48">
+                    <button class="btn btn-outline-secondary text-start rounded-pill flex-grow-1" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        Start a post
+                    </button>
+                </div>
+                <div class="d-flex justify-content-between mt-3 px-2">
+                    <button class="btn btn-light btn-sm flex-grow-1 mx-1 text-muted fw-bold border-0 hover-bg-light" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="fas fa-image text-primary me-2 fs-5"></i> Media
+                    </button>
+                    <button class="btn btn-light btn-sm flex-grow-1 mx-1 text-muted fw-bold border-0 hover-bg-light">
+                        <i class="fas fa-calendar-alt text-warning me-2 fs-5"></i> Event
+                    </button>
+                    <button class="btn btn-light btn-sm flex-grow-1 mx-1 text-muted fw-bold border-0 hover-bg-light">
+                        <i class="fas fa-newspaper text-danger me-2 fs-5"></i> Article
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Post Modal -->
+        <div class="modal fade" id="createPostModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-bottom-0 pb-0">
+                        <h5 class="modal-title fs-5">Create a post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="/feed/post" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body pt-2">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="<%= user.profilePhoto %>" class="rounded-circle me-2 object-fit-cover" width="48" height="48">
+                                <div>
+                                    <h6 class="mb-0 fw-bold"><%= user.name %></h6>
+                                    <span class="badge bg-secondary rounded-pill"><i class="fas fa-globe-americas me-1"></i> Anyone</span>
+                                </div>
+                            </div>
+                            <textarea name="content" class="form-control border-0 fs-5 p-0 mb-3" rows="4" placeholder="What do you want to talk about?" required style="resize: none; box-shadow: none;"></textarea>
+                            
+                            <div class="mt-3">
+                                <label class="form-label text-muted small"><i class="fas fa-image me-1"></i> Add an image (optional)</label>
+                                <input type="file" name="image" class="form-control form-control-sm" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0 pt-0">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feed Posts -->
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <div class="card shadow-sm border-0 mb-4 post-card">
+                    <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex">
+                                <a href="/profile/<%= post.author._id %>">
+                                    <img src="<%= post.author.profilePhoto %>" class="rounded-circle me-2 object-fit-cover" width="48" height="48">
+                                </a>
+                                <div>
+                                    <h6 class="mb-0 fs-6"><a href="/profile/<%= post.author._id %>" class="text-dark text-decoration-none fw-bold hover-underline"><%= post.author.name %></a></h6>
+                                    <p class="text-muted mb-0 lh-1" style="font-size: 0.75rem;"><%= post.author.headline %></p>
+                                    <small class="text-muted" style="font-size: 0.7rem;"><%= new Date(post.createdAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' }) %> • <i class="fas fa-globe-americas"></i></small>
+                                </div>
+                            </div>
+                            <% if (post.author._id.toString() === user._id.toString()) { %>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light border-0 rounded-circle text-muted p-2 hover-bg-light" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                        <li>
+                                            <form action="/feed/<%= post._id %>?_method=DELETE" method="POST">
+                                                <button type="submit" class="dropdown-item text-danger"><i class="fas fa-trash me-2"></i>Delete Post</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body py-2">
+                        <p class="card-text mb-2 text-dark fs-6" style="white-space: pre-line;"><%= post.content %></p>
+                    </div>
+
+                    <% if (post.image) { %>
+                        <img src="<%= post.image %>" class="img-fluid w-100 bg-light" alt="Post Image">
+                    <% } %>
+
+                    <div class="px-3 py-2 border-bottom mx-2">
+                        <small class="text-muted">
+                            <i class="fas fa-thumbs-up text-primary bg-light rounded-circle p-1 me-1"></i>
+                            <span id="likes-count-<%= post._id %>"><%= post.likes.length %></span> likes • <%= post.comments.length %> comments
+                        </small>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0 py-1 d-flex justify-content-between px-2">
+                        <form action="/feed/like/<%= post._id %>" method="POST" class="flex-grow-1 text-center m-1">
+                            <button type="submit" class="btn btn-light btn-sm w-100 fw-bold border-0 py-2 hover-bg-light <%= post.likes.includes(user._id) ? 'text-primary' : 'text-muted' %>">
+                                <i class="fas fa-thumbs-up me-1 fs-5 align-middle"></i> Like
+                            </button>
+                        </form>
+                        <button class="btn btn-light btn-sm flex-grow-1 m-1 text-muted fw-bold border-0 py-2 hover-bg-light" data-bs-toggle="collapse" data-bs-target="#comments-<%= post._id %>">
+                            <i class="fas fa-comment me-1 fs-5 align-middle"></i> Comment
+                        </button>
+                        <button class="btn btn-light btn-sm flex-grow-1 m-1 text-muted fw-bold border-0 py-2 hover-bg-light">
+                            <i class="fas fa-share me-1 fs-5 align-middle"></i> Share
+                        </button>
+                    </div>
+
+                    <!-- Comments Section (Collapsible) -->
+                    <div class="collapse bg-light py-2" id="comments-<%= post._id %>">
+                        <div class="card-body pt-0">
+                            <!-- Add Comment Form -->
+                            <div class="d-flex mb-4 align-items-center">
+                                <img src="<%= user.profilePhoto %>" class="rounded-circle me-2 object-fit-cover align-self-start mt-1" width="40" height="40">
+                                <form action="/feed/comment/<%= post._id %>" method="POST" class="flex-grow-1">
+                                    <div class="input-group">
+                                        <input type="text" name="text" class="form-control rounded-pill border-1" placeholder="Add a comment..." required>
+                                        <button class="btn btn-primary rounded-pill ms-2 fw-bold px-3" type="submit">Post</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- List Comments -->
+                            <% post.comments.forEach(comment => { %>
+                                <div class="d-flex mb-3">
+                                    <a href="/profile/<%= comment.user._id %>">
+                                        <img src="<%= comment.user.profilePhoto %>" class="rounded-circle me-2 object-fit-cover" width="40" height="40">
+                                    </a>
+                                    <div class="bg-white p-3 rounded-3 shadow-sm w-100 border">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="/profile/<%= comment.user._id %>" class="text-dark text-decoration-none fw-bold hover-underline" style="font-size: 0.9rem;"><%= comment.user.name %></a>
+                                            <small class="text-muted" style="font-size: 0.75rem;"><%= new Date(comment.createdAt).toLocaleDateString() %></small>
+                                        </div>
+                                        <p class="mb-0 mt-1 text-dark" style="font-size: 0.9rem;"><%= comment.text %></p>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="card shadow-sm border-0 text-center py-5">
+                <div class="card-body">
+                    <h5 class="text-muted fw-bold">No posts yet</h5>
+                    <p class="text-muted">Start connecting with people to see their posts in your feed.</p>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="col-md-3 d-none d-lg-block">
+        <%- include('../partials/sidebar-right') %>
+    </div>
+</div>

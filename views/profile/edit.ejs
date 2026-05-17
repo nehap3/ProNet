@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow-sm border-0 p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h4 class="fw-bold mb-0">Edit Profile</h4>
+                <a href="/profile/<%= user._id %>" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold">View Profile</a>
+            </div>
+
+            <form action="/profile/edit?_method=PUT" method="POST" enctype="multipart/form-data">
+                
+                <h5 class="fw-bold mt-4 mb-3">Intro</h5>
+                <div class="row mb-3">
+                    <div class="col-md-4 text-center">
+                        <img src="<%= user.profilePhoto %>" class="rounded-circle img-fluid mb-2 object-fit-cover shadow-sm border" width="120" height="120">
+                        <input type="file" name="profilePhoto" class="form-control form-control-sm mt-2" accept="image/*">
+                        <small class="text-muted">Upload new photo</small>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Full Name *</label>
+                            <input type="text" name="name" class="form-control" value="<%= user.name %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Headline *</label>
+                            <input type="text" name="headline" class="form-control" value="<%= user.headline %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Location</label>
+                            <input type="text" name="location" class="form-control" value="<%= user.location %>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-bold">About</label>
+                    <textarea name="about" class="form-control" rows="4"><%= user.about %></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-bold">Skills (comma separated)</label>
+                    <input type="text" name="skills" class="form-control" value="<%= user.skills.join(', ') %>" placeholder="e.g. JavaScript, React, Node.js">
+                </div>
+
+                <div class="mb-4 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="isOpenToWork" id="openToWork" <%= user.isOpenToWork ? 'checked' : '' %>>
+                    <label class="form-check-label fw-bold" for="openToWork">Open to work</label>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Save Changes</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Add Experience -->
+        <div class="card shadow-sm border-0 p-4 mb-4">
+            <h5 class="fw-bold mb-3">Add Experience</h5>
+            <form action="/profile/experience" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted small fw-bold">Company *</label>
+                        <input type="text" name="company" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted small fw-bold">Role *</label>
+                        <input type="text" name="role" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-bold">Duration (e.g. Jan 2020 - Present) *</label>
+                    <input type="text" name="duration" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-bold">Description</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Add Experience</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Add Education -->
+        <div class="card shadow-sm border-0 p-4 mb-4">
+            <h5 class="fw-bold mb-3">Add Education</h5>
+            <form action="/profile/education" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted small fw-bold">School / University *</label>
+                        <input type="text" name="college" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted small fw-bold">Degree *</label>
+                        <input type="text" name="degree" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted small fw-bold">Year (e.g. 2018 - 2022)</label>
+                        <input type="text" name="year" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted small fw-bold">Grade / CGPA</label>
+                        <input type="text" name="cgpa" class="form-control">
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Add Education</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="card shadow-sm border-0 mb-4 h-100" style="min-height: 80vh;">
+    <div class="row g-0 h-100">
+        <!-- Conversations List -->
+        <div class="col-md-4 border-end h-100 d-flex flex-column">
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
+                <h5 class="fw-bold mb-0">Messaging</h5>
+                <i class="fas fa-edit text-muted"></i>
+            </div>
+            <div class="overflow-auto flex-grow-1 bg-white">
+                <ul class="list-group list-group-flush">
+                    <% if (conversations.length > 0) { %>
+                        <% conversations.forEach(conv => { %>
+                            <a href="/messages?user=<%= conv._id %>" class="list-group-item list-group-item-action p-3 <%= activeChatUser && activeChatUser._id.toString() === conv._id.toString() ? 'bg-light border-start border-4 border-primary' : '' %>">
+                                <div class="d-flex align-items-center">
+                                    <img src="<%= conv.profilePhoto %>" class="rounded-circle me-3 object-fit-cover" width="48" height="48">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h6 class="mb-0 fw-bold text-dark text-truncate"><%= conv.name %></h6>
+                                        <p class="mb-0 text-muted small text-truncate"><%= conv.headline %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="p-4 text-center text-muted">
+                            <p>No messages yet.</p>
+                        </div>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="col-md-8 h-100 d-flex flex-column bg-white">
+            <% if (activeChatUser) { %>
+                <div class="p-3 border-bottom bg-white">
+                    <h5 class="fw-bold mb-0"><%= activeChatUser.name %></h5>
+                </div>
+                
+                <div class="flex-grow-1 overflow-auto p-4 bg-white d-flex flex-column" id="chat-box">
+                    <% chatHistory.forEach(msg => { %>
+                        <% if (msg.sender.toString() === user._id.toString()) { %>
+                            <div class="d-flex justify-content-end mb-3">
+                                <div class="bg-primary text-white rounded-3 p-3 ms-5 shadow-sm" style="max-width: 75%;">
+                                    <%= msg.content %>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="d-flex justify-content-start mb-3">
+                                <div class="d-flex align-items-end">
+                                    <img src="<%= activeChatUser.profilePhoto %>" class="rounded-circle me-2 object-fit-cover mb-1" width="32" height="32">
+                                    <div class="bg-light text-dark rounded-3 p-3 me-5 shadow-sm border" style="max-width: 75%;">
+                                        <%= msg.content %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+
+                <div class="p-3 border-top bg-light">
+                    <form action="/messages/send" method="POST">
+                        <input type="hidden" name="receiver" value="<%= activeChatUser._id %>">
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control rounded-pill border-0 ps-4 shadow-sm" placeholder="Write a message..." required autocomplete="off">
+                            <button class="btn btn-primary rounded-pill ms-2 fw-bold px-4 shadow-sm" type="submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    // Scroll to bottom
+                    const chatBox = document.getElementById('chat-box');
+                    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+                </script>
+            <% } else { %>
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-muted bg-white">
+                    <img src="/images/messages-empty.svg" alt="Empty" onerror="this.style.display='none'" width="150" class="mb-3">
+                    <h4 class="fw-bold">No message selected</h4>
+                    <p>Select a conversation to start messaging</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

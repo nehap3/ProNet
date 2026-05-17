@@ -1,0 +1,75 @@
+<div class="row justify-content-center align-items-center min-vh-100 mt-n5">
+    <div class="col-md-5 col-lg-4">
+        <div class="text-center mb-4">
+            <h1 class="text-primary fw-bold"><i class="fa-brands fa-linkedin"></i> ProNet</h1>
+            <h2 class="fs-4 fw-light">Make the most of your professional life</h2>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3 p-4">
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label text-muted fw-semibold">Email or phone</label>
+                    <input type="email" class="form-control form-control-lg fs-6" name="email" required>
+                    <div class="email error text-danger small mt-1"></div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold">Password</label>
+                    <input type="password" class="form-control form-control-lg fs-6" name="password" required>
+                    <div class="password error text-danger small mt-1"></div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold fs-6">Sign in</button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none">Forgot password?</a>
+            </div>
+            
+            <div class="d-flex align-items-center my-4">
+                <hr class="flex-grow-1">
+                <span class="mx-2 text-muted small">or</span>
+                <hr class="flex-grow-1">
+            </div>
+
+            <div class="text-center">
+                <p class="mb-0">New to ProNet? <a href="/register" class="fw-bold text-decoration-none">Join now</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // reset errors
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        // get values
+        const email = form.email.value;
+        const password = form.password.value;
+
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            
+            if (data.errors) {
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.password;
+            }
+            if (data.user) {
+                location.assign('/feed');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+</script>

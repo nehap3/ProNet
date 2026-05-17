@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-3 d-none d-md-block">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-bottom-0 pt-3">
+                <h6 class="fw-bold mb-0">Manage your Notifications</h6>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action text-primary fw-bold border-start border-4 border-primary bg-light">All Notifications</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-0">
+                <% if (notifications.length > 0) { %>
+                    <ul class="list-group list-group-flush">
+                        <% notifications.forEach(notif => { %>
+                            <li class="list-group-item p-3 <%= notif.isRead ? 'bg-white' : 'bg-light border-start border-4 border-primary' %>">
+                                <div class="d-flex align-items-center">
+                                    <a href="/profile/<%= notif.sender._id %>">
+                                        <img src="<%= notif.sender.profilePhoto %>" class="rounded-circle me-3 object-fit-cover" width="48" height="48">
+                                    </a>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-1 text-dark">
+                                            <a href="/profile/<%= notif.sender._id %>" class="text-dark fw-bold text-decoration-none hover-underline"><%= notif.sender.name %></a> 
+                                            <% if (notif.type === 'like') { %>
+                                                liked your post.
+                                            <% } else if (notif.type === 'comment') { %>
+                                                commented on your post.
+                                            <% } else if (notif.type === 'connection') { %>
+                                                accepted your connection request.
+                                            <% } else if (notif.type === 'message') { %>
+                                                sent you a message.
+                                            <% } %>
+                                        </p>
+                                        <small class="text-muted"><%= new Date(notif.createdAt).toLocaleString() %></small>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <div class="p-5 text-center text-muted">
+                        <h4 class="fw-bold mb-2">No new notifications</h4>
+                        <p>You're all caught up!</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 d-none d-lg-block">
+        <%- include('../partials/footer') %>
+    </div>
+</div>

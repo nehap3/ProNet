@@ -1,0 +1,111 @@
+/* Custom Styles for ProNet */
+
+:root {
+    --pronet-primary: #0A66C2;
+    --pronet-bg: #F3F2EF;
+    --pronet-text-dark: rgba(0, 0, 0, 0.9);
+    --pronet-text-muted: rgba(0, 0, 0, 0.6);
+}
+
+body {
+    background-color: var(--pronet-bg) !important;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;
+    color: var(--pronet-text-dark);
+}
+
+.text-primary {
+    color: var(--pronet-primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--pronet-primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--pronet-primary);
+    border-color: var(--pronet-primary);
+}
+
+.btn-primary:hover {
+    background-color: #004182;
+    border-color: #004182;
+}
+
+.btn-outline-primary {
+    color: var(--pronet-primary);
+    border-color: var(--pronet-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--pronet-primary);
+    color: white;
+}
+
+/* Navbar */
+.navbar {
+    height: 52px;
+}
+
+.search-form .input-group-text,
+.search-form .form-control {
+    background-color: #EEF3F8 !important;
+}
+
+.search-form .form-control:focus {
+    box-shadow: none;
+    background-color: #EEF3F8 !important;
+}
+
+.nav-link {
+    font-size: 0.75rem;
+    padding: 0 !important;
+    min-width: 80px;
+}
+
+.nav-link.active {
+    color: var(--pronet-text-dark) !important;
+}
+
+/* Cards */
+.card {
+    border-radius: 0.8rem;
+}
+
+/* Hover effects */
+.hover-bg-light:hover {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    border-radius: 4px;
+}
+
+.hover-underline:hover {
+    text-decoration: underline !important;
+}
+
+/* Post Composer */
+textarea:focus {
+    outline: none;
+}
+
+/* Utilities */
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    border-radius: 8px 0 8px 8px;
+}
+
+/* Transition */
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Active chats */
+.border-4 {
+    border-width: 4px !important;
+}
