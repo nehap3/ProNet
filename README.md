@@ -64,5 +64,3 @@ ProNet is a full-stack, production-ready professional networking web application
 5. Add all Environment Variables from your `.env` file to the Render dashboard.
 6. Ensure your MongoDB Atlas cluster allows connections from anywhere (`0.0.0.0/0`) or specifically Render's IP addresses.
 
-## Screenshots
-*(Add your screenshots here)*
