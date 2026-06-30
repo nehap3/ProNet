@@ -2,6 +2,9 @@
 
 ProNet is a full-stack, production-ready professional networking web application built as a LinkedIn replica. It uses Node.js, Express.js, MongoDB, EJS, and Bootstrap 5.
 
+## Live Demo
+https://pronet-bip8.onrender.com/
+
 ## Tech Stack
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB Atlas with Mongoose
