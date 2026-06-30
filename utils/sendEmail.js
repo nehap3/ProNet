@@ -3,10 +3,9 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (options) => {
     // If SMTP credentials are provided, use them. Otherwise, log to console.
     if (process.env.SMTP_HOST && process.env.SMTP_EMAIL && process.env.SMTP_PASSWORD) {
+        console.log('Attempting to send email via SMTP...');
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT || 587,
-            secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+            service: 'gmail', // Force Gmail service for better compatibility
             auth: {
                 user: process.env.SMTP_EMAIL,
                 pass: process.env.SMTP_PASSWORD
