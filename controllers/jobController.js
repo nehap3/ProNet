@@ -17,6 +17,33 @@ exports.getJobs = async (req, res) => {
     }
 };
 
+exports.renderPostJob = (req, res) => {
+    res.render('jobs/post', { title: 'Post a Job | ProNet' });
+};
+
+exports.createJob = async (req, res) => {
+    try {
+        const { title, company, location, type, description, requirements, salary } = req.body;
+        
+        await Job.create({
+            title,
+            company,
+            location,
+            type,
+            description,
+            requirements,
+            salary,
+            postedBy: req.userId
+        });
+
+        req.flash('success_msg', 'Job posted successfully!');
+        res.redirect('/jobs');
+    } catch (err) {
+        req.flash('error_msg', 'Failed to post job. Please ensure all fields are valid.');
+        res.redirect('/jobs/post');
+    }
+};
+
 exports.getJobDetail = async (req, res) => {
     try {
         const job = await Job.findById(req.params.id).populate('postedBy', 'name profilePhoto headline');
